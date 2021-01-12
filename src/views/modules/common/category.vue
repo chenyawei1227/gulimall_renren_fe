@@ -10,7 +10,17 @@
   修改时间：
 -->
 <template>
-    <div></div>
+    <div>
+      <el-tree :data="menus"
+               :props="defaultProps"
+               node-key="catId"
+               ref="menuTree"
+               @node-click="nodeclick"
+               :filter-node-method="filterNode"
+               :highlight-current = "true">
+
+      </el-tree>
+    </div>
 </template>
 
 <script>
@@ -26,14 +36,45 @@
     components: {},
     // 组件状态值
     data () {
-      return {}
+      return {
+        filterText: "",
+        menus: [],
+        expanedKeys: [],
+        defaultProps: {
+          children: 'children',
+          label: 'name'
+        }
+      }
     },
     // 计算属性
     computed: {},
     // 侦听器
-    watch: {},
+    watch: {
+      filterText(val) {
+        this.$refs.menuTree.filter(val);
+      }
+    },
     // 组件方法
-    methods: {},
+    methods: {
+      // 树节点过滤
+      filterNode(value, data) {
+        if (!value) return true;
+        return data.name.indexOf(value) !== -1;
+      },
+      getMenus() {
+        this.$http({
+          url: this.$http.adornUrl("/product/category/list/tree"),
+          method: "get"
+        }).then(({ data }) => {
+          this.menus = data.data;
+        });
+      },
+      nodeclick(data, node, component) {
+        console.log("子组件category的节点被点击", data, node, component);
+        // 向父组件发送事件；
+        this.$emit("tree-node-click", data, node, component);
+      }
+    },
     // 以下是生命周期钩子   注：没用到的钩子请自行删除
     /**
      * 在实例初始化之后，组件属性计算之前，如data属性等
@@ -44,6 +85,7 @@
      * 组件实例创建完成，属性已绑定，但DOM还未生成，$ el属性还不存在
      */
     created () {
+      this.getMenus();
     },
     /**
      * 在挂载开始之前被调用：相关的 render 函数首次被调用。
