@@ -6,8 +6,8 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button v-if="isAuth('ware:wmswareordertask:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('ware:wmswareordertask:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <el-button v-if="isAuth('ware:purchasedetail:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button v-if="isAuth('ware:purchasedetail:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -26,73 +26,31 @@
         prop="id"
         header-align="center"
         align="center"
-        label="id">
+        label="">
       </el-table-column>
       <el-table-column
-        prop="orderId"
+        prop="purchaseId"
         header-align="center"
         align="center"
-        label="order_id">
+        label="采购单id">
       </el-table-column>
       <el-table-column
-        prop="orderSn"
+        prop="skuId"
         header-align="center"
         align="center"
-        label="order_sn">
+        label="采购商品id">
       </el-table-column>
       <el-table-column
-        prop="consignee"
+        prop="skuNum"
         header-align="center"
         align="center"
-        label="收货人">
+        label="采购数量">
       </el-table-column>
       <el-table-column
-        prop="consigneeTel"
+        prop="skuPrice"
         header-align="center"
         align="center"
-        label="收货人电话">
-      </el-table-column>
-      <el-table-column
-        prop="deliveryAddress"
-        header-align="center"
-        align="center"
-        label="配送地址">
-      </el-table-column>
-      <el-table-column
-        prop="orderComment"
-        header-align="center"
-        align="center"
-        label="订单备注">
-      </el-table-column>
-      <el-table-column
-        prop="paymentWay"
-        header-align="center"
-        align="center"
-        label="付款方式【 1:在线付款 2:货到付款】">
-      </el-table-column>
-      <el-table-column
-        prop="taskStatus"
-        header-align="center"
-        align="center"
-        label="任务状态">
-      </el-table-column>
-      <el-table-column
-        prop="orderBody"
-        header-align="center"
-        align="center"
-        label="订单描述">
-      </el-table-column>
-      <el-table-column
-        prop="trackingNo"
-        header-align="center"
-        align="center"
-        label="物流单号">
-      </el-table-column>
-      <el-table-column
-        prop="createTime"
-        header-align="center"
-        align="center"
-        label="create_time">
+        label="采购金额">
       </el-table-column>
       <el-table-column
         prop="wareId"
@@ -101,10 +59,10 @@
         label="仓库id">
       </el-table-column>
       <el-table-column
-        prop="taskComment"
+        prop="status"
         header-align="center"
         align="center"
-        label="工作单备注">
+        label="状态[0新建，1已分配，2正在采购，3已完成，4采购失败]">
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -133,7 +91,7 @@
 </template>
 
 <script>
-  import AddOrUpdate from './wmswareordertask-add-or-update'
+  import AddOrUpdate from './purchasedetail-add-or-update'
   export default {
     data () {
       return {
@@ -160,7 +118,7 @@
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/ware/wmswareordertask/list'),
+          url: this.$http.adornUrl('/ware/purchasedetail/list'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
@@ -211,7 +169,7 @@
           type: 'warning'
         }).then(() => {
           this.$http({
-            url: this.$http.adornUrl('/ware/wmswareordertask/delete'),
+            url: this.$http.adornUrl('/ware/purchasedetail/delete'),
             method: 'post',
             data: this.$http.adornData(ids, false)
           }).then(({data}) => {

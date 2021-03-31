@@ -7,17 +7,14 @@
     <el-form-item label="sku_id" prop="skuId">
       <el-input v-model="dataForm.skuId" placeholder="sku_id"></el-input>
     </el-form-item>
-    <el-form-item label="仓库id" prop="wareId">
-      <el-input v-model="dataForm.wareId" placeholder="仓库id"></el-input>
-    </el-form-item>
-    <el-form-item label="库存数" prop="stock">
-      <el-input v-model="dataForm.stock" placeholder="库存数"></el-input>
-    </el-form-item>
     <el-form-item label="sku_name" prop="skuName">
       <el-input v-model="dataForm.skuName" placeholder="sku_name"></el-input>
     </el-form-item>
-    <el-form-item label="锁定库存" prop="stockLocked">
-      <el-input v-model="dataForm.stockLocked" placeholder="锁定库存"></el-input>
+    <el-form-item label="购买个数" prop="skuNum">
+      <el-input v-model="dataForm.skuNum" placeholder="购买个数"></el-input>
+    </el-form-item>
+    <el-form-item label="工作单id" prop="taskId">
+      <el-input v-model="dataForm.taskId" placeholder="工作单id"></el-input>
     </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -35,26 +32,22 @@
         dataForm: {
           id: 0,
           skuId: '',
-          wareId: '',
-          stock: '',
           skuName: '',
-          stockLocked: ''
+          skuNum: '',
+          taskId: ''
         },
         dataRule: {
           skuId: [
             { required: true, message: 'sku_id不能为空', trigger: 'blur' }
           ],
-          wareId: [
-            { required: true, message: '仓库id不能为空', trigger: 'blur' }
-          ],
-          stock: [
-            { required: true, message: '库存数不能为空', trigger: 'blur' }
-          ],
           skuName: [
             { required: true, message: 'sku_name不能为空', trigger: 'blur' }
           ],
-          stockLocked: [
-            { required: true, message: '锁定库存不能为空', trigger: 'blur' }
+          skuNum: [
+            { required: true, message: '购买个数不能为空', trigger: 'blur' }
+          ],
+          taskId: [
+            { required: true, message: '工作单id不能为空', trigger: 'blur' }
           ]
         }
       }
@@ -67,16 +60,15 @@
           this.$refs['dataForm'].resetFields()
           if (this.dataForm.id) {
             this.$http({
-              url: this.$http.adornUrl(`/ware/wmswaresku/info/${this.dataForm.id}`),
+              url: this.$http.adornUrl(`/ware/wareordertaskdetail/info/${this.dataForm.id}`),
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.code === 0) {
-                this.dataForm.skuId = data.wmsWareSku.skuId
-                this.dataForm.wareId = data.wmsWareSku.wareId
-                this.dataForm.stock = data.wmsWareSku.stock
-                this.dataForm.skuName = data.wmsWareSku.skuName
-                this.dataForm.stockLocked = data.wmsWareSku.stockLocked
+                this.dataForm.skuId = data.wareordertaskdetail.skuId
+                this.dataForm.skuName = data.wareordertaskdetail.skuName
+                this.dataForm.skuNum = data.wareordertaskdetail.skuNum
+                this.dataForm.taskId = data.wareordertaskdetail.taskId
               }
             })
           }
@@ -87,15 +79,14 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.$http({
-              url: this.$http.adornUrl(`/ware/wmswaresku/${!this.dataForm.id ? 'save' : 'update'}`),
+              url: this.$http.adornUrl(`/ware/wareordertaskdetail/${!this.dataForm.id ? 'save' : 'update'}`),
               method: 'post',
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
                 'skuId': this.dataForm.skuId,
-                'wareId': this.dataForm.wareId,
-                'stock': this.dataForm.stock,
                 'skuName': this.dataForm.skuName,
-                'stockLocked': this.dataForm.stockLocked
+                'skuNum': this.dataForm.skuNum,
+                'taskId': this.dataForm.taskId
               })
             }).then(({data}) => {
               if (data && data.code === 0) {
