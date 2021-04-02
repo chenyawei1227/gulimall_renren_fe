@@ -69,6 +69,12 @@
           </el-col>
         </el-row>
       </el-form-item>
+      <el-form-item v-if="dataForm.type != 0" label="是否显示" prop="showStatus">
+        <el-select v-model="dataForm.showStatus">
+          <el-option label="显示" :value="0"></el-option>
+          <el-option label="不显示" :value="1"></el-option>
+        </el-select>
+      </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
@@ -102,7 +108,8 @@
           perms: '',
           orderNum: 0,
           icon: '',
-          iconList: []
+          iconList: [],
+          showStatus: 0
         },
         dataRule: {
           name: [
@@ -123,7 +130,7 @@
       }
     },
     created () {
-      this.iconList = Icon.getNameList()
+      this.iconList = Icon.getNameList();
     },
     methods: {
       init (id) {
@@ -158,6 +165,7 @@
               this.dataForm.perms = data.menu.perms
               this.dataForm.orderNum = data.menu.orderNum
               this.dataForm.icon = data.menu.icon
+              this.dataForm.showStatus = data.menu.showStatus
               this.menuListTreeSetCurrentNode()
             })
           }
@@ -192,7 +200,8 @@
                 'url': this.dataForm.url,
                 'perms': this.dataForm.perms,
                 'orderNum': this.dataForm.orderNum,
-                'icon': this.dataForm.icon
+                'icon': this.dataForm.icon,
+                'showStatus': this.dataForm.showStatus
               })
             }).then(({data}) => {
               if (data && data.code === 0) {

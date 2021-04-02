@@ -3,7 +3,7 @@
     :title="!dataForm.id ? '新增' : '修改'"
     :close-on-click-modal="false"
     :visible.sync="visible">
-    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
+    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="120px">
     <el-form-item label="sku_id" prop="skuId">
       <el-input v-model="dataForm.skuId" placeholder="sku_id"></el-input>
     </el-form-item>
@@ -65,10 +65,10 @@
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.code === 0) {
-                this.dataForm.skuId = data.wareordertaskdetail.skuId
-                this.dataForm.skuName = data.wareordertaskdetail.skuName
-                this.dataForm.skuNum = data.wareordertaskdetail.skuNum
-                this.dataForm.taskId = data.wareordertaskdetail.taskId
+                this.dataForm.skuId = data.wareOrderTaskDetail.skuId
+                this.dataForm.skuName = data.wareOrderTaskDetail.skuName
+                this.dataForm.skuNum = data.wareOrderTaskDetail.skuNum
+                this.dataForm.taskId = data.wareOrderTaskDetail.taskId
               }
             })
           }

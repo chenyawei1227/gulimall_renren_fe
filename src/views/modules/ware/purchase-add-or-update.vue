@@ -3,33 +3,9 @@
     :title="!dataForm.id ? '新增' : '修改'"
     :close-on-click-modal="false"
     :visible.sync="visible">
-    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
-    <el-form-item label="采购人id" prop="assigneeId">
-      <el-input v-model="dataForm.assigneeId" placeholder="采购人id"></el-input>
-    </el-form-item>
-    <el-form-item label="采购人名" prop="assigneeName">
-      <el-input v-model="dataForm.assigneeName" placeholder="采购人名"></el-input>
-    </el-form-item>
-    <el-form-item label="联系方式" prop="phone">
-      <el-input v-model="dataForm.phone" placeholder="联系方式"></el-input>
-    </el-form-item>
+    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="120px">
     <el-form-item label="优先级" prop="priority">
       <el-input v-model="dataForm.priority" placeholder="优先级"></el-input>
-    </el-form-item>
-    <el-form-item label="状态" prop="status">
-      <el-input v-model="dataForm.status" placeholder="状态"></el-input>
-    </el-form-item>
-    <el-form-item label="仓库id" prop="wareId">
-      <el-input v-model="dataForm.wareId" placeholder="仓库id"></el-input>
-    </el-form-item>
-    <el-form-item label="总金额" prop="amount">
-      <el-input v-model="dataForm.amount" placeholder="总金额"></el-input>
-    </el-form-item>
-    <el-form-item label="创建日期" prop="createTime">
-      <el-input v-model="dataForm.createTime" placeholder="创建日期"></el-input>
-    </el-form-item>
-    <el-form-item label="更新日期" prop="updateTime">
-      <el-input v-model="dataForm.updateTime" placeholder="更新日期"></el-input>
     </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -50,7 +26,7 @@
           assigneeName: '',
           phone: '',
           priority: '',
-          status: '',
+          status: 0,
           wareId: '',
           amount: '',
           createTime: '',
@@ -95,20 +71,20 @@
           this.$refs['dataForm'].resetFields()
           if (this.dataForm.id) {
             this.$http({
-              url: this.$http.adornUrl(`/ware/wmspurchase/info/${this.dataForm.id}`),
+              url: this.$http.adornUrl(`/ware/purchase/info/${this.dataForm.id}`),
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.code === 0) {
-                this.dataForm.assigneeId = data.wmsPurchase.assigneeId
-                this.dataForm.assigneeName = data.wmsPurchase.assigneeName
-                this.dataForm.phone = data.wmsPurchase.phone
-                this.dataForm.priority = data.wmsPurchase.priority
-                this.dataForm.status = data.wmsPurchase.status
-                this.dataForm.wareId = data.wmsPurchase.wareId
-                this.dataForm.amount = data.wmsPurchase.amount
-                this.dataForm.createTime = data.wmsPurchase.createTime
-                this.dataForm.updateTime = data.wmsPurchase.updateTime
+                this.dataForm.assigneeId = data.purchase.assigneeId
+                this.dataForm.assigneeName = data.purchase.assigneeName
+                this.dataForm.phone = data.purchase.phone
+                this.dataForm.priority = data.purchase.priority
+                this.dataForm.status = data.purchase.status
+                this.dataForm.wareId = data.purchase.wareId
+                this.dataForm.amount = data.purchase.amount
+                this.dataForm.createTime = data.purchase.createTime
+                this.dataForm.updateTime = data.purchase.updateTime
               }
             })
           }

@@ -66,6 +66,14 @@
         label="授权标识">
       </el-table-column>
       <el-table-column
+        prop="perms"
+        header-align="center"
+        align="center"
+        width="150"
+        :show-overflow-tooltip="true"
+        label="页面是否显示">
+      </el-table-column>
+      <el-table-column
         fixed="right"
         header-align="center"
         align="center"
